@@ -7,6 +7,7 @@ It aims to 1. give an easier access to knowledge about international work to all
 
 
 Current ToDos:
+	* enable cancelling view	
 	* identifying proper online database to load markers from 
 		- content should be easily manageable (file format and writing/making changes into)
 		- should be quick and uncomplicated in loading
@@ -35,6 +36,10 @@ Current ToDos:
 		- enable filtering for dates (this year, next year, always, ...)
 		- show only future things, not past (but activatable)
 		- get drop-down menu to choose those menus
+	* enable merging points when zoom is far out
+	* include others
+		- who else wants to contribute? (advertisement, project-description)
+		- Adrian etc in git directory
 	* get input from all sides
 	* cross-federation-input / cross-federation site and content?
 
