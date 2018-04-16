@@ -1,0 +1,85 @@
+
+body{
+  background-image:url(http://cdn.pfadfinden.de/gfx/backgrounds/holzhintergrund_1.jpg);
+/*   background-image:url("file:///media/wollex/Data/Documents/Pfadfinden/AKInt/Design/Holzhintergrund.jpg"); */
+}
+
+#map{ 
+  height: 800px;
+  width: 1200px;
+  border: 5px solid #1d4899;
+  margin: 0px;
+  float: left;
+}
+
+#onlineMap {
+  max-width: 100%;
+  margin: auto;
+}
+#mapmenu input{
+/*     float:    left; */
+    margin:   0px 3px 0px 3px;
+    padding:  3px;
+    background-color: #FFFFFF;
+    color:            gray;
+    font-size:        18;
+    border:           #1d4899;
+    border-width:     5px 5px 0px 5px;
+    border-style:     solid solid none solid;
+}
+#mapmenu input:hover {
+    background-color: #efcb04;
+}
+
+#mapmenu input:click {
+    background-color: white;
+    color:            gray;
+}
+
+.infobox{
+  border:   5px dotted #1d4899;
+  padding:  15px;
+  margin: 5px;
+  background-color: rgba(255,203,4,0.5);
+  position: relative;
+  text-align:   left;
+  vertical-align:   top;
+  float: left;
+}
+
+.infobox ul {
+  list-style-type: none;
+}
+
+nav {
+  float: left;
+  border:   5px solid #1d4899;
+  padding:  15px;
+  background-color: #ffcb04;
+  text-align:   left;
+  vertical-align:   top;
+}
+
+hr {
+   clear:both;   /* what does that mean? */
+}
+
+.x {
+  position: absolute;
+  top:              5px;
+  right:            5px;
+  width:            25px;
+  height:           25px;
+  text-align:       center;
+  vertical-align:   center;
+  padding:          0px;
+  margin:           0px;
+  border:           2px solid black;
+  border-style:     groove;
+}
+
+.x:hover {
+  background-color: rgb(200,200,200);
+}
+
+
