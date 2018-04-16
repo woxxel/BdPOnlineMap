@@ -15,7 +15,7 @@ body{
   max-height: 100%;
   max-width:  100%;
   margin:     auto;
-/*   border:     3px solid black; */
+  border:     3px solid black;
 }
 #mapmenu input{
   margin:             0px 3px 0px 3px;
