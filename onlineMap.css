@@ -62,6 +62,9 @@ body{
   border:           2px solid black;
   border-style:     groove;
 }
+#info_title {
+  font-size:        18;
+}
 
 
 nav {

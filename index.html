@@ -42,28 +42,43 @@
     <!--                 here, make the things activatable by clicking (by default, all are active) -->
   <!--   should be drop down menu on mobile -->
       <div id="mapmenu" style="clear:right">
-        <input id="mm_1" type="button" onclick="mapFilter(marker[0],'mm_1')" value="Weltzentren">
-        <input id="mm_2" type="button" onclick="mapFilter(marker[1],'mm_2')" value="Partnerschaften">
-        <input id="mm_3" type="button" onclick="mapFilter(marker[2],'mm_3')" value="Lager">
-        <input id="mm_4" type="button" onclick="mapFilter(marker[3],'mm_4')" value="Länderexperten">
-        <input id="mm_5" type="button" onclick="mapFilter(marker[4],'mm_5')" value="Gastgruppen Bundeslager">
-        <input id="mm_6" type="button" onclick="mapFilter(marker[5],'mm_6')" value="Andere" style="background-color:white;color:gray;">
+        <input id="mm_1" type="button" onclick="mapFilter(0,'mm_1')" value="Weltzentren">
+        <input id="mm_2" type="button" onclick="mapFilter(1,'mm_2')" value="Partnerschaften">
+        <input id="mm_3" type="button" onclick="mapFilter(2,'mm_3')" value="Lager">
+        <input id="mm_4" type="button" onclick="mapFilter(3,'mm_4')" value="Länderexperten">
+        <input id="mm_5" type="button" onclick="mapFilter(4,'mm_5')" value="Gastgruppen Bundeslager">
+        <input id="mm_6" type="button" onclick="mapFilter(5,'mm_6')" value="Andere" style="background-color:white;color:gray;">
       </div>
       <div id="map"></div>
       
       <div class="infobox" style="max-width:400px">
         <!-- add "x-button" to unselect information -->
-        <input type="button" class="x" onclick="" value="x">    <!-- write function to return to default explanatory message -->
+        <input type="button" class="x" onclick="unselect_all()" value="x">    <!-- write function to return to default explanatory message -->
         
-        <p id="info_title"> <b>Dies ist eine Infobox</b> </p>
+        <p id="info_title"></p>
         
-        <ul>    <!-- change style, such that title stays alone, description comes after (or do as table) -->
-          <li id="info_descr"> Wähle einen Marker auf der Karte aus, um mehr über internationale Möglichkeiten im BdP zu erfahren! </li>
-          <li id="info_place"> Wähle die reiter über der Karte, um Marker ein- und auszublenden </li>
-          <li id="info_poss"> </li>
-          <li id="info_currposs"> </li>
-          <li id="info_contact"> </li>
-        </ul>
+        <table>
+          <tr>
+            <td id="info_descr_tag"> </td>
+            <td id="info_descr_content"> </td>
+          </tr>
+          <tr>
+            <td id="info_place_tag"> </td>
+            <td id="info_place_content"> </td>
+          </tr>
+          <tr>
+            <td id="info_poss_tag"> </td>
+            <td id="info_poss_content"> </td>
+          </tr>
+          <tr>
+            <td id="info_currposs_tag"> </td>
+            <td id="info_currposs_content"> </td>
+          </tr>
+          <tr>
+            <td id="info_contact_tag"> </td>
+            <td id="info_contact_content"> </td>
+          </tr>
+        </table>
         
         <img id="info_image" src="" alt="" style="width:350px;height:auto;">
       </div>
@@ -105,8 +120,9 @@
 <!--     <script src="https://spreadsheets.google.com/feeds/cells/14FsXzOlgeJXasfbqfwqvdRJU_Aa3ZnX8tkrDgYPT-Ls/1/public/values?alt=json-in-script&callback=doData" id="datasheet"></script> -->
     
     <script>
+    reset_infobox();
     var marker = {};
-    
+    var selected = null;
     // construct watched variable
     var sheet = {
       ctInternal: 0,
@@ -125,7 +141,7 @@
     
     // define listener function to be called when variable is changed
     sheet.registerListener(function(val) {
-      if (sheet.ct < 3) {
+      if (sheet.ct < 4) {
         url = "https://spreadsheets.google.com/feeds/cells/14FsXzOlgeJXasfbqfwqvdRJU_Aa3ZnX8tkrDgYPT-Ls/" + sheet.ct + "/public/values?alt=json-in-script&callback=readData";
         $.loadScript(url, function(){
 //             console.log("loaded!")

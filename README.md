@@ -9,12 +9,13 @@ It aims to 1. give an easier access to knowledge about international work to all
 Current ToDos:
 	* enable cancelling view	
 check	* identifying proper online database to load markers from 
-		- content should be easily manageable (file format and writing/making changes into)
-		- should be quick and uncomplicated in loading
-		- should fulfill certain level of data security (even though most of its content will be published on the web, anyway?!)
-		- google.docs? limesurvey-database? what else?
+check		- content should be easily manageable (file format and writing/making changes into)
+check		- should be quick and uncomplicated in loading
+check		- should fulfill certain level of data security (even though most of its content will be published on the web, anyway?!)
+check		- google.docs? limesurvey-database? what else?
 check	* loading from online database (not .csv)
-		- quick, clean and secure
+clean		- quick, clean
+should have pw	- and secure
 	* updating online database
 		- identify proper structure for each category
 		- fill with decent information / links / media
@@ -27,6 +28,10 @@ check	* loading from online database (not .csv)
 		- what should be in there?
 		- need additional structure?
 		- how to update it?
+	* implement change: marker <-> region
+		- how to display things as region?
+		- how to switch the display?
+		- when to do it / which one is standard?
 	* implementation somewhere?
 		- hosting as pfadfinden.de content?
 		- on pfa.de?
