@@ -8,17 +8,18 @@ It aims to 1. give an easier access to knowledge about international work to all
 
 Current ToDos:
 	* enable cancelling view	
-	* identifying proper online database to load markers from 
+check	* identifying proper online database to load markers from 
 		- content should be easily manageable (file format and writing/making changes into)
 		- should be quick and uncomplicated in loading
 		- should fulfill certain level of data security (even though most of its content will be published on the web, anyway?!)
 		- google.docs? limesurvey-database? what else?
-	* loading from online database (not .csv)
+check	* loading from online database (not .csv)
 		- quick, clean and secure
 	* updating online database
 		- identify proper structure for each category
 		- fill with decent information / links / media
 		- find proper marker icons
+		- adding additional info: auswärtiges amt (Reisehinweise), was ist sonst sinnvoll?
 	* make website available for mobile devices
 		- why is it not working currently?
 		- make page responsive (and clear - maybe popup of info-box, instead of fixed position?)
