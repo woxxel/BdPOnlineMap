@@ -34,28 +34,28 @@
   
   <body>
     <nav class="infobox">
-      <a href="#OnlineMap">Map </a> </br>
+      <a href="#mapDiv">Map </a> </br>
       <a href="#AKinfo">AK Info </a>
     </nav>
   
-    <div id="onlineMap">
+    <div id="mapDiv" style="float:left">
     <!--                 here, make the things activatable by clicking (by default, all are active) -->
   <!--   should be drop down menu on mobile -->
-      <div id="mapmenu" style="clear:right">
+      <div id="mapmenu">
         <input id="mm_1" type="button" onclick="mapFilter(0,'mm_1')" value="Weltzentren">
         <input id="mm_2" type="button" onclick="mapFilter(1,'mm_2')" value="Partnerschaften">
         <input id="mm_3" type="button" onclick="mapFilter(2,'mm_3')" value="Lager">
-        <input id="mm_4" type="button" onclick="mapFilter(3,'mm_4')" value="Länderexperten">
-        <input id="mm_5" type="button" onclick="mapFilter(4,'mm_5')" value="Gastgruppen Bundeslager">
+        <input id="mm_4" type="button" onclick="mapFilter(3,'mm_4')" value="Gastgruppen Bundeslager">
+        <input id="mm_5" type="button" onclick="mapFilter(4,'mm_5')" value="Länderexperten">
         <input id="mm_6" type="button" onclick="mapFilter(5,'mm_6')" value="Andere" style="background-color:white;color:gray;">
       </div>
       <div id="map"></div>
       
-      <div class="infobox" style="max-width:400px">
+      <div class="infobox" style="width:25%;float:left">
         <!-- add "x-button" to unselect information -->
         <input type="button" class="x" onclick="unselect_all()" value="x">    <!-- write function to return to default explanatory message -->
         
-        <p id="info_title"></p>
+        <p id="info_title" class="title"></p>
         
         <table>
           <tr>
@@ -82,6 +82,45 @@
         
         <img id="info_image" src="" alt="" style="width:350px;height:auto;">
       </div>
+      
+      <div class="infobox" style="width:25%;float:left;clear:right">
+        <p id="info_country_name" class="title"></p>
+        <table>
+          <tr>
+            <td id="info_country_descr_tag"> </td>
+            <td id="info_country_descr_content"> </td>
+          </tr>
+          <tr>
+            <td id="info_country_contact_tag"> </td>
+            <td id="info_country_contact_content"> </td>
+          </tr>
+          <tr>
+            <td id="info_country_links_tag"> </td>
+            <td id="info_country_links_content"> </td>
+          </tr>
+        </table>
+        <div id="submitCountry" style="display:none">
+          <p> Ländername: </p>
+          <input type="text">
+          </br>
+          
+          <p> Beschreibung: </p>
+          <textarea style="width:350px;rows:4">Bitte gib eine kurze Beschreibung des Landes! </textarea>
+          </br>
+          
+          <p> Email: </p>
+          <input type="text">
+          </br>
+          
+          <p> Website: </p>
+          <input type="text">
+          </br>
+          
+          <input type="submit" value="Absenden" style="enable:false"> 
+          
+        </div>
+      </div>
+      
     </div>
   
     <hr/>
@@ -98,9 +137,10 @@
                               minZoom: 2,
                               maxZoom: 15,
                               attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-      }).setView([47, 15], 4);
+      }).setView([47, 15], 4)
+      .on('click',onMapClick);
       var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map);
-      
+      var popup = L.popup();
       // set up markers
       L.Control.geocoder().addTo(map)
       var geocoder = L.Control.Geocoder.nominatim()
@@ -116,13 +156,11 @@
     </script>
     
     
-
-<!--     <script src="https://spreadsheets.google.com/feeds/cells/14FsXzOlgeJXasfbqfwqvdRJU_Aa3ZnX8tkrDgYPT-Ls/1/public/values?alt=json-in-script&callback=doData" id="datasheet"></script> -->
-    
+<!--     load marker positions from database -->
     <script>
     reset_infobox();
     var marker = {};
-    var selected = null;
+    var selected = [null,null];
     // construct watched variable
     var sheet = {
       ctInternal: 0,
@@ -138,21 +176,26 @@
         this.ctListener = listener;
       }
     }
-    
     // define listener function to be called when variable is changed
     sheet.registerListener(function(val) {
-      if (sheet.ct < 4) {
-        url = "https://spreadsheets.google.com/feeds/cells/14FsXzOlgeJXasfbqfwqvdRJU_Aa3ZnX8tkrDgYPT-Ls/" + sheet.ct + "/public/values?alt=json-in-script&callback=readData";
+      if (sheet.ct < 6) {
+        url = "https://spreadsheets.google.com/feeds/cells/14FsXzOlgeJXasfbqfwqvdRJU_Aa3ZnX8tkrDgYPT-Ls/" + sheet.ct + "/public/values?alt=json-in-script&callback=readMarkers";
         $.loadScript(url, function(){
-//             console.log("loaded!")
             //Stuff to do after loadScript finished execution
         });
       }
     });
-    
     // trigger first change
     sheet.ct++;
   
+    </script>
+      
+    <script>
+      var countries = {};
+      url = "https://spreadsheets.google.com/feeds/cells/14FsXzOlgeJXasfbqfwqvdRJU_Aa3ZnX8tkrDgYPT-Ls/" + 7 + "/public/values?alt=json-in-script&callback=readCountries";
+      $.loadScript(url, function(){
+          //Stuff to do after loadScript finished execution
+      });
     </script>
   </body>
 </html>

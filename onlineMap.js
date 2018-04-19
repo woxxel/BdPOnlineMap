@@ -16,7 +16,7 @@ function get_coords(location,marker,idx) {
 }
 
 
-function readData(json) {
+function readMarkers(json) {
     
     var idx = sheet.ct-1;   // setting idx to be static after ajax request for data is sent
     sheet.ct++;             // advancing to next sheet in document
@@ -64,6 +64,40 @@ function readData(json) {
     toggle_menu("#mm_"+(idx+1),0);    // enabling toggle on-/off- of marker hide function
 }
 
+
+function readCountries(json) {
+    
+//     var idx = sheet.ct-1;   // setting idx to be static after ajax request for data is sent
+//     sheet.ct++;             // advancing to next sheet in document
+    console.log("loading countries from database")
+    var data = json.feed.entry;   // getting data from online database
+    
+    for(var i=0; i<data.length; i++) {
+        var cell = data[i]["gs$cell"];
+        var val = cell["$t"];
+//         console.log(val)
+        if (cell.row == 1) {
+          if (cell.col == 1) {
+            countries.Topics = [];
+          }
+          countries["Topics"][cell.col-1] = val;
+        }
+        else {
+          if (cell.col == 1) {
+            countries[val] = {};
+            country_tag = val;
+          }
+          else {
+            countries[country_tag][cell.col-1] = val;
+          }
+        }
+    }
+    console.log(countries)
+}
+
+
+
+
 function plotData(marker) {
     
     if (marker.loaded) {    // shouldn't be needed - but keep until everything runs smoothly!
@@ -75,7 +109,7 @@ function plotData(marker) {
         layer.on('click',function (e) {
             if (feature.activity.clicked) {
               reset_infobox();
-              selected = null;
+              selected = [null,null];
               feature.activity.clicked = false;
             }
             else {
@@ -84,16 +118,18 @@ function plotData(marker) {
               document.getElementById("info_place_tag").innerHTML = "<b>" + marker.Topics[0] + "</b>";
               document.getElementById("info_place_content").innerHTML = feature.properties[0];
               
-              document.getElementById("info_descr_tag").innerHTML = "<b>" + marker.Topics[3] + ":</b>";
+              document.getElementById("info_descr_tag").innerHTML = "<b>" + marker.Topics[3] + "</b>";
               document.getElementById("info_descr_content").innerHTML = feature.properties[3];
               
-              document.getElementById("info_poss_tag").innerHTML = "<b>" + marker.Topics[4] + ":</b>";
+              document.getElementById("info_poss_tag").innerHTML = "<b>" + marker.Topics[4] + "</b>";
               document.getElementById("info_poss_content").innerHTML = feature.properties[4];
               
-              document.getElementById("info_currposs_tag").innerHTML = "<b>" + marker.Topics[5] + ":</b>";
+              document.getElementById("info_currposs_tag").innerHTML = "<b>" + marker.Topics[5] + "</b>";
               document.getElementById("info_currposs_content").innerHTML = feature.properties[5];
               
-              document.getElementById("info_contact_tag").innerHTML = "<b>" + marker.Topics[6] + ":</b>";
+              // replace "@" with "(at) for protection against webcrawlers or so
+              // if begins with "www", make it a href
+              document.getElementById("info_contact_tag").innerHTML = "<b>" + marker.Topics[6] + "</b>";
               document.getElementById("info_contact_content").innerHTML = feature.properties[6];
               
               document.getElementById("info_image").src= feature.properties[7];
@@ -175,9 +211,89 @@ function reset_infobox() {
   document.getElementById("info_contact_content").innerHTML = "";
 
   document.getElementById("info_image").src= "";
+  
+  
+  document.getElementById("info_country_name").innerHTML = "<b> Kein Land ausgewählt </b>";
+  
+  document.getElementById("info_country_descr_tag").innerHTML = "";
+  document.getElementById("info_country_descr_content").innerHTML = "Klicke auf ein Land auf der Weltkarte um nähere Informationen zu erhalten";
+  
+  document.getElementById("info_country_contact_tag").innerHTML = "";
+  document.getElementById("info_country_contact_content").innerHTML = "";
+  
+  document.getElementById("info_country_links_tag").innerHTML = "";
+  document.getElementById("info_country_links_content").innerHTML = "";
 }
 
 function unselect_all() {
   reset_infobox();
   map.closePopup();
+}
+
+
+function onMapClick(e) {
+  
+  reset_infobox()
+  $("#submitCountry").css("display","none")
+  var database_entry = false;
+  
+  geocoder.reverse(e.latlng, map.getZoom(), function(results) {
+//       marker.Markers[idx].geometry.coordinates = [results[0].center.lng, results[0].center.lat];
+      marker.geocode_ct--;
+      console.log(results[0].name)
+      var re = new RegExp(', ');
+      var address = results[0].name.split(re);
+      console.log(address)
+      var country = address[address.length-1];
+      
+      
+      
+      
+      var keys = Object.keys(countries);
+      
+      
+      
+      
+      if (keys.indexOf(country) !== -1) {
+        popup
+          .setLatLng(e.latlng)
+          .setContent(countries[country][1])
+          .openOn(map);
+        
+        document.getElementById("info_country_name").innerHTML = "<b> " + countries[country][1] + " </b>";
+        
+        document.getElementById("info_country_descr_tag").innerHTML = "<b> " + countries["Topics"][2] + " </b>";
+        document.getElementById("info_country_descr_content").innerHTML = countries[country][2];
+        
+        document.getElementById("info_country_contact_tag").innerHTML = "<b> " + countries["Topics"][3] + " </b>";
+        document.getElementById("info_country_contact_content").innerHTML = countries[country][3];
+        
+        document.getElementById("info_country_links_tag").innerHTML = "<b> " + countries["Topics"][4] + " </b>";
+        document.getElementById("info_country_links_content").innerHTML = countries[country][4];
+        
+      }
+      else {
+        popup
+          .setLatLng(e.latlng)
+          .setContent(country)
+          .openOn(map);
+        
+        document.getElementById("info_country_name").innerHTML = "<b> " + country + " </b>";
+        document.getElementById("info_country_descr_tag").innerHTML = "";
+        document.getElementById("info_country_descr_content").innerHTML = "Für " + country + " ist noch kein Eintrag in der Datenbank vorhanden. Fülle das folgende Formular aus, um einen Eintrag zu erstellen!";
+        
+        $("#submitCountry").css("display","inline")
+      }
+        
+      // results has to be stripped of the unneeded string parts - only last part needed
+      // if country is already in database, display information.
+      // if not, get form, to fill in data that can be submitted (and written to the database)
+      // data can also be updated, when already present
+      
+      
+      // if all requests of this mark are finished, plot markers
+//       if (marker.geocode_ct==0) {
+//           plotData(marker)
+//       }
+  });
 }

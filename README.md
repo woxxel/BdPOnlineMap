@@ -14,8 +14,23 @@ check		- should be quick and uncomplicated in loading
 check		- should fulfill certain level of data security (even though most of its content will be published on the web, anyway?!)
 check		- google.docs? limesurvey-database? what else?
 check	* loading from online database (not .csv)
-clean		- quick, clean
+check		- quick, clean
 should have pw	- and secure
+		- should have backup / be safe from unintended & malicious changes
+	* loading stuff:
+		- get marker to display, when something is loading (pending status)
+		- why is getting countries sooooo slow? why is there "Europe" sometimes?
+		- maybe change everything to mapbox?
+	* info submission
+		- enable form submit for countries to fill up google-database (and reload data afterwards?)
+		- implement "submit partnership" etc
+		- implement captcha for that
+	* dates
+		- implement dates for projects
+		- implement filter for "past projects", "upcoming projects", "registering now available", ...
+	* design:
+		- make options more dynamic (drop-down on mouse over, nice visuals, ...)
+		- enable merging marker when zoom is far out
 	* updating online database
 		- identify proper structure for each category
 		- fill with decent information / links / media
@@ -42,7 +57,6 @@ should have pw	- and secure
 		- enable filtering for dates (this year, next year, always, ...)
 		- show only future things, not past (but activatable)
 		- get drop-down menu to choose those menus
-	* enable merging points when zoom is far out
 	* include others
 		- who else wants to contribute? (advertisement, project-description)
 		- Adrian etc in git directory
